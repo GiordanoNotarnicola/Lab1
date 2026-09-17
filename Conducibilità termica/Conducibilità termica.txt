@@ -1,0 +1,156 @@
+Si suppone che l'unico modo per trasmettere il calore sia solo per conduzione. 
+Materiali: barretta riscaldata da una resistenza elettrica da un lato e raffreddata dall'acqua corrente da una parte. sembra che ci sia un flusso costante di calore da destra a sinistra. sembra anche che ci sia una costante, che dipende dai materiali, che chiamiamo conducibilità termica. inoltre dipende dalla sezione e dalla temperatura in fumzione della posizione.
+
+sens sonde 0.1 C sigma_T=0.2 (non 1/rad12)
+le due sonde hanno una differenza di 0.5 gradi.
+
+Dati:
+sensibilità metro(mm): [1]
+sensibilità calibro (mm): [0.05]
+
+
+Lunghezza vari punti rame (21 buchi) (mm):[0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300, 320, 340, 360, 380, 400]
+Diametro rame (mm):[24.00] S=452.39
+
+Lunghezza vari punti alluminio (15 buchi) (mm): [0, 25, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350]
+Diametro ferro: [25.10] S=494.81
+
+W=7.83 +- 0.1 Watt
+
+[0.144, 0.144, 0.144, 0.144, 0.144, 0.144, 0.144, 0.144, 0.144, 0.144, 0.144, 0.144, 0.144, 0.144, 0.144]
+
+Rosso Rame + alto al T15
+
+Primo rosso Rame T T0verifica(39.31) [43.66, 44.44, 43.92, 42.39, 42.90, 43.41, 39.80, 41.39, 41.76, 41.39, 41.89, 40.77, 41.02, 40.77, 40.40, 39.31, 40.53, 40.53, 39.55, 40.28, 40,53]
+Secondo blu acciaio T (41.64) [45.62, 45.89, 44.96, 44.57, 41.39, 39.43, 42.29, 41.51, 41.39, 41.51, 40.53, 40.28, 39.80, 40.16, 40.04]
+
+Rosso T [45.1, 44.9, 44.5, 43.9, 43.7, 43.1, 42.4, 42.1, 41.5, 41.1, 40.7, 40.2, 39.9, 39.5, 39.1, 38.9, 38.6, 38.5, 38.3, 38.2, 38.2] Nuovo T_0=46.6
+Blu T [48.4, 47.6, 47.3, 46.7, 46.4, 45.5, 43.6, 43.0, 42.4, 42.1, 41.7, 41.3, 41.1, 40.7, 40.4] Nuovo T_0=49.9
+
+Dopo il punto 6 si è aspettato è lo scambio con l'aria...
+Verso la fine T è più alta per flusso d'acqua...
+
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{amsthm, mathrsfs, amsmath}
+\usepackage[labelfont=bf]{caption}
+\renewcommand{\figurename}{Immagine}
+\renewcommand{\tablename}{Tabella}
+\usepackage{graphicx}
+
+
+% Title Page
+\title{\Huge \textbf{Conducibilità termica}}
+\author{Giordano Notarnicola, Luca Pastore}
+\date{17/11/2023}
+
+\begin{document}
+\maketitle
+
+\section{Scopo dell’esperienza}
+Si ricava la conducibilità termica $\lambda$ di due barre cilindriche di diverso materiale, riscaldate da una resistenza elettrica da un'estremità e raffreddate da un sistema di acqua corrente dall’altra, conoscendo temperatura e posizione rispetto all'estremità con la resistenza.
+\section{Cenni teorici}
+La quantità di calore che si trasmette per conduzione nell’unità di tempo
+\begin{equation}
+	W=\dfrac{dQ}{dt}
+\end{equation}
+è detta \textit{flusso di calore} e nel sistema MKS si misura in Watt. All’equilibrio termico il flusso di calore attraverso la barra risulta costante (se non ci sono perdite tutta l’energia erogata dalla resistenza non può che essere assorbita dall’acqua all’altra estremità). Se S è la sezione della barra, $T$ la temperatura ed $x$ la posizione lungo la barra, la teoria prevede che:
+\begin{equation}
+	W=-\lambda S\dfrac{\Delta T}{\Delta x}
+\end{equation}
+dove la costante di proporzionalità $\lambda$ è detta conducibilità termica del materiale (dato che il calore si propaga verso zone a temperatura più bassa, orientato l’asse $x$ nel verso in cui si propaga il calore, $\Delta T /\Delta x$ risulta negativo ed è necessario il segno meno).
+\section{Apparato sperimentale}
+Apparato sperimentale:
+\begin{itemize}
+\item due barre cilindriche forate di diverso materiale;
+\item olio 
+\item alimentatore stabilizzato a doppia uscita che genera resistenza elettrica;
+\item circuito di acqua corrente;
+\item arduino.
+\end{itemize}
+Strumenti di misura:
+\begin{itemize}
+	\item calibro ventesimale (sensibilità 0.05\,mm);
+	\item metro a nastro (sensibilità 0.1\,mm);
+	\item due sonde termiche legate al programma di acquisizione \textit{Temperature Monitor} di plasduino (sensibilità 0.1\,°C); 
+\end{itemize}
+
+
+\begin{figure}[h!]
+	\centering
+	\begin{minipage}[b]{0.5\textwidth}
+		\includegraphics[width=\textwidth]{C:/Users/Luca/Desktop/EspLab1/EspStr1}
+		\caption{barre cilindriche.}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{C:/Users/Luca/Desktop/EspLab1/EspStr2}
+		\caption{alimentatore.}
+	\end{minipage}
+\end{figure}
+\section{Descrizione delle misure}
+Per calcolare la sezione è stato misurato il diametro delle barre tramite il calibro ventesimale, mentre per calcolare la potenza, visto che si tratta di un'alimentazione di due resistenze in parallelo, $W=VI/2$. Su ogni foro della barra cilindrica sono state misurate la temperatura con le sonde e la posizione rispetto allo zero, in questo caso posta nel primo foro dal lato della resistenza, con il metro a nastro. Inoltre ogni foro è stato riempito d'olio per cercare di stabilizzare il più possibile la temperatura di ognuno di essi. I risultato sono i seguenti $\pm$
+
+\begin{table}[h] % 'h' specifies that the table should be placed 'here'
+	\centering
+	\begin{tabular}{|c|c|c|c|} % 'c' denotes center-aligned columns, '|' adds vertical lines
+		\hline
+		\textbf{Temperatura 1 (\,°C)} & \textbf{Posizione1 (\,mm)} & \textbf{Temperatura 2 (\,°C)} & \textbf{Posizione2 (\,mm)} \\
+		\hline
+	 & 0.0 & &  \\
+	 & 25.0 &  & \\
+	 & 50.0 & &  \\
+	 & 75.0 &  & \\
+	 & 100.0&  & \\
+	 & 125.0 &  & \\
+	 & 150.0 & & \\
+	 & 175.0 & &  \\
+	 & 200.0 &  & \\
+	 & 225.0 & &  \\
+	 & 250.0 &  & \\
+	 & 275.0 & &  \\
+	 & 300.0 & &  \\
+	 & 325.0 & &  \\
+	 & 350.0 &  & \\
+	 
+	\end{tabular}
+	\caption{valori di misura...}
+	\label{tab:mytable}
+\end{table}
+L'incertezza della posizione è la deviazione standard di una densità di probabilità costante è $\sigma_x=0.3\,mm$, stesso discorso per l'incertezza della temperatura. Tuttavia, i dati oscillavano mediamente di $0.2\,°C$ per questo motivo si è posto $\sigma_T=0.2\,°C$. Per l'incertezza della potenza è stata propagata l'incertezza attraverso le derivate parziali, si ricava $\sigma_W=0.1$. Per la sezione si propaga l'errore considerando che le misure sono dipendenti, $\sigma_S=qualcosa$.
+
+\section{Analisi dei dati}
+Poichè il modello suppone un andamento lineare della temperatura rispetto alla posizione, si è usato un codice Pyton per generare la miglior retta che approssima i dati che si sono misurati. In questo caso si sono ottenute due rette decrescenti, come ci si aspettava. Si è generato anche un grafico dei residui (utile per stimare quantitativamente di quante barre d'errore discostano i dati raccolti dal best fit) e si è notato che entrambi i sistemi presentano numerosi dati che si discostano anche di 2/3 barre d'errore ed altri che raggiungono il picco delle 6/7 barre d'errore. 
+Si nota anche che, su entrambi i grafici, si hanno i primi 6 valori al di sopra del best fit, mentre il settimo si trova drasticamente al di sotto. Questo fenomeno può essere giustificato dalla troppa attesa tra due misurazioni contigue: infatti proprio alla sesta misurazione, si è interrotto il campionamento dei dati per alcuni minuti. 
+Inoltre ci si accorge che nelle ultime misurazioni la temperatura decresce più lentamente rispetto alle prime: questo avvenimento è probabilmente causato dal flusso di acqua corrente che si trova agli estremi dei cilindretti conduttori. (questo avvenimento è probabilmente causato dal calore disperso per convezione e irraggiamento dal sistema. Questi due fenomeni, anche se trascurati dal modello, falsano sicuramente le misurazioni)(versione mia)
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{C:/Users/Luca/Desktop/EspLab1/Alluminio}
+	\caption{}
+	\label{fig:alluminio}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{C:/Users/Luca/Desktop/EspLab1/Rame}
+	\caption{}
+	\label{fig:rame}
+\end{figure}
+Anche se l'esperienza non ha confermato il modello adottato, si può comunque tentare di calcolare $\lambda$ e discuterne il risultato:
+\begin{equation}
+    $\lambda$=- \dfrac{W}{S$\alpha$}
+\end{equation}
+con:
+\begin{equation}
+$\alpha$=\dfrac{$\Delta$ T}{$\Delta$ x}
+\end{equation}
+Dopo aver propagato l'errore, il risultato ottenuto è:
+\begin{equation}
+$\lambda$=xxxx$\pm$xx \,Wm^-1°C^-1
+\end{equation}
+
+\section{Conclusioni}
+Alla luce dell'analisi dati discussa al punto precedente, si può affermare che il modello non rispecchia i dati. Più della metà dei dati distano parecchie barre d'errore dal best fit lineare, inoltre i valori di $\lambda$ ottenuti sono di molto superiori a quelli tabulati, quindi si può concludere che altri fenomeni hanno influenzato le misurazioni. Sicuramente il calore disperso dalla convezione e dall'irraggiamento è uno di questi: la temperatura della stanza cambia di continuo e, per constatarlo, dopo aver effettuato tutte le misurazioni, abbiamo misurato nuovamente la temperatura del primo foro. Non stupisce osservare che la temperatura è aumentata di 1,5\,°C rispetto alla precedente in entrambi i cilindretti in quella posizione.
+
+
+
+\end{document}          
